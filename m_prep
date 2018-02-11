@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu
+URL="$1"
+HASH=$(echo "$URL" | sha1sum | sed -e 's/[^0-9a-f].*//')
+git clone --mirror "$URL" tmp
+cd tmp
+git "--namespace=$HASH" push --mirror ..
+cd ..
+rm -rf tmp
+./m_add "$URL"
